@@ -31,9 +31,9 @@ namespace ERPCore
             services.AddMvc();
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
-            services.AddTransient<IEmployeeRepository, SqliteEmployeeRepository>();
-            // services.AddTransient<IEmployeeRepository, MSqlEmployeeRepository>();
-            //services.AddTransient<IEmployeeRepository, InMemoryEmployeeRepository>();
+            services.AddScoped<IEmployeeRepository, SqliteEmployeeRepository>();
+            // services.AddScoped<IEmployeeRepository, MSqlEmployeeRepository>();
+            // services.AddScoped<IEmployeeRepository, InMemoryEmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
