@@ -2,7 +2,25 @@
 
 ## .netCore 3 POC
 
+## Highlights
 
+* CRUD
+* Custom Tags (Pagination Tag)
+* Entity Framework
+* DI
+* Razor pages
+
+## Changing data store 
+### Supported :
+* In Memory
+* SQLite
+* MSSQL
+
+```C#
+   services.AddTransient<IEmployeeRepository, SqliteEmployeeRepository>();
+   // services.AddTransient<IEmployeeRepository, MSqlEmployeeRepository>();
+   // services.AddTransient<IEmployeeRepository, InMemoryEmployeeRepository>();
+```
 
 ### Home Page
 ![Screenshot](Screens/1.jpeg)
