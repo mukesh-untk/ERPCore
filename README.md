@@ -23,28 +23,28 @@
 ```
 
 ### Home Page
-![Screenshot](Screens/1.jpeg)
+<kbd>![Screenshot](Screens/1.jpeg)</kbd>
 
 ### Employee list Page
-![Screenshot](Screens/2.jpeg)
+<kbd>![Screenshot](Screens/2.jpeg)</kbd>
 
 ### Add Employee Page
-![Screenshot](Screens/3.jpeg)
+<kbd>![Screenshot](Screens/3.jpeg)</kbd>
 
 ### Add Employee Page : Validation
-![Screenshot](Screens/4.jpeg)
+<kbd>![Screenshot](Screens/4.jpeg)</kbd>
 
 ###  Employee list Page : Actions
-![Screenshot](Screens/5.jpeg)
+<kbd>![Screenshot](Screens/5.jpeg)</kbd>
 
 ###  Employee detail Page
-![Screenshot](Screens/6.jpeg)
+<kbd>![Screenshot](Screens/6.jpeg)</kbd>
 
 ###  Employee edit Page
-![Screenshot](Screens/7.jpeg)
+<kbd>![Screenshot](Screens/7.jpeg)</kbd>
 
 ###  Employee list Page : Delete
-![Screenshot](Screens/8.jpeg)
+<kbd>![Screenshot](Screens/8.jpeg)</kbd>
 
 ###  Employee list Page : Alert
-![Screenshot](Screens/9.jpeg)
+<kbd>![Screenshot](Screens/9.jpeg)</kbd>
