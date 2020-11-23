@@ -1,6 +1,4 @@
-# ERPCore
-
-## .netCore 3 POC
+# ERPCore  ## .netCore 3 POC
 
 ## Highlights
 
