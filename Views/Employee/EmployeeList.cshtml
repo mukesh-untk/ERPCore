@@ -1,0 +1,55 @@
+﻿@model ERPCore.ViewModels.EmployeeListViewModel
+
+@{
+    Layout = null;
+}
+
+
+@if (Model.Total > 0)
+{
+    foreach (var employee in Model.Employees)
+    {
+        <tr>
+            <td>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">Action </button>
+                    <div class="dropdown-menu">
+                        <a href="Employee/Details/@employee.Id" class="dropdown-item">Details</a>
+                        <a href="Employee/Edit/@employee.Id" class="dropdown-item">Edit</a>
+                        <a class="dropdown-item bg-danger" href="#" onclick="ChangeSelectedItem(@employee.Id)" data-toggle="modal" data-target="#confirmModal">Delete</a>
+                    </div>
+                </div>
+            </td>
+            <td>@employee.FirstName</td>
+
+            <td>@employee.LastName</td>
+
+            <td>@employee.Email</td>
+
+            <td>@employee.Age</td>
+
+            <td>@employee.Gender</td>
+
+            <td>@employee.DateOfJoining.ToString("MM/dd/yyyy")</td>
+        </tr>
+
+
+    }
+
+    <tr>
+        <td colspan="10">
+            <div class="float-right">
+                @*@Html.Pagination(Model.Offset, Model.Total, 5, "changePagination(this)")*@
+                <pagination current-page="@Model.Offset" total-rows="@Model.Total" row-per-page="5" on-client-click="changePagination(this)"></pagination>
+            </div>
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td colspan="10">
+            <h4 class="text-center">No data available.</h4>
+        </td>
+    </tr>
+}

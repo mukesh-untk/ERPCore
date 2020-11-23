@@ -1,0 +1,203 @@
+@model ERPCore.ViewModels.EmployeeListViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row my-3">
+    <div class="col-6">
+        <h2>All Employees</h2>
+    </div>
+    <div class="col-6">
+        @*@Html.ActionLink("Add New", "Create", new { }, htmlAttributes: new { @class = "btn btn-success float-right" })*@
+        <a class="btn btn-success float-right" asp-area="" asp-controller="Employee" asp-action="Create">Add New</a>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="form-inline my-1">
+
+                @Html.EditorFor(model => model.SearchText, new { htmlAttributes = new { @class = "form-control mr-sm-2", MaxLength = "50", Placeholder = "Search" } })
+                @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control mr-sm-2", MaxLength = "50", type = "Date" } })
+                @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control mr-sm-2", MaxLength = "50", type = "Date" } })
+                <div class="float-right">
+                    <Button ID="btnSearch" onclick="Search()" Class="btn btn-outline-success my-2 my-sm-0" Text="Search">Search</Button>
+                    <Button ID="btnClear" onclick="ClearFilter()" Class="btn btn-outline-primary my-2 mx-2 my-sm-0" Text="Show All">Show All</Button>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+@{ var dummy = Model.Employees.FirstOrDefault(); }
+
+<div class="table-responsive">
+    <table class="table" id="empTable">
+        <thead>
+            <tr>
+                <th> </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'firstName')" id="firstName" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.FirstName)
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'lastName')" id="lastName" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.LastName)
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'email')" id="email" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.Email)
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'age')" id="age" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.Age)
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'gender')" id="gender" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.Gender)
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="orderBy(this, 'doj')" id="dob" class="sort sort-dis">
+                        @Html.DisplayNameFor(model => dummy.DateOfJoining)
+                    </a>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody id="tableData">
+            <partial name="EmployeeList" for="@Model">
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="confirmModalTitle">Confirm Delete ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are You sure you want to delete this user ? This action can not be undone.
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm("Delete", "Employee"))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="id" name="id" value="" />
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal End -->
+
+    <div class="loading" id="loading">
+        <div class="center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+    <script>
+
+        var prevOrder;
+        var formdata = {};
+
+        function ChangeSelectedItem(id) {
+            $("#id").val(id);
+        }
+
+        function orderBy(ele, orderBy) {
+
+            formdata.orderBy = orderBy;
+
+            if (prevOrder != ele && prevOrder) {
+                prevOrder.className = "sort sort-dis";
+            }
+
+            var order = ele.className.split(' ')[1];
+
+            switch (order) {
+                case 'sort-dis':
+                    ele.className = "sort sort-asc";
+                    formdata.order = "asc";
+                    break;
+                case 'sort-asc':
+                    ele.className = "sort sort-desc";
+                    formdata.order = "desc";
+                    break;
+                case 'sort-desc':
+                    ele.className = "sort sort-asc";
+                    formdata.order = "asc";
+                    break;
+            }
+            prevOrder = ele;
+            formdata.page = 1;
+
+            GetEmployeeData();
+        }
+
+        function GetEmployeeData() {
+
+            formdata.searchText = document.getElementById("SearchText").value;
+            formdata.dateFrom = document.getElementById("DateFrom").value;
+            formdata.dateTo = document.getElementById("DateTo").value;
+            $("#loading" ).show();
+            $.ajax({
+                type: 'POST',
+                url: '/Employee/EmployeePage',
+                contentType: 'application/x-www-form-urlencoded',
+                data: formdata,
+                success: function (result) {
+                    document.getElementById("tableData").innerHTML = result;
+                    $("#loading" ).hide();
+                },
+                error: function (err) {
+                    console.log('error :');
+                    console.log(err);
+                    $("#loading" ).hide();
+                }
+
+            });
+        }
+
+        function changePagination(ele) {
+            formdata.page = ele.getAttribute("data-page");
+            GetEmployeeData();
+        }
+
+        function Search() {
+            formdata.order = "desc";
+            formdata.orderBy = "doj";
+            GetEmployeeData();
+        }
+
+        function ClearFilter() {
+            document.getElementById("SearchText").value = "";
+            document.getElementById("DateFrom").value = "";
+            document.getElementById("DateTo").value = "";
+            formdata.order = "desc";
+            formdata.orderBy = "doj";
+            GetEmployeeData();
+        }
+
+    </script>
+}
+
