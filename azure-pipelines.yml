@@ -6,20 +6,22 @@
 trigger:
 - master
 
+variables:
+- name: env
+  value: Test
+- name: config
+  value: Release
+
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     feedsToUse: 'select'
-    
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
+    arguments: --configuration ${{variables.config}}
