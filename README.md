@@ -1,4 +1,6 @@
 # ERPCore  : .netCore 3 POC
+<img src="https://github.com/mukesh-untk/ERPCore/workflows/.NET Core/badge.svg" alt="build status"/>
+
 
 ## Highlights
 
